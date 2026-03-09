@@ -1,0 +1,16 @@
+model Restaurant {
+  id        Int       @id @default(autoincrement()) @map("id")
+  name      String    @map("name")
+  avgPrice  Float     @map("avg_price")
+  speed     Speed     @map("speed")
+  cuisine   Cuisine   @map("cuisine")
+  takeaway  Boolean   @default(false) @map("takeaway")
+  dineIn    Boolean   @default(true)  @map("dine_in")
+  active    Boolean   @default(true)  @map("active")
+  address   String?   @map("address")
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+
+  @@map("restaurants")
+  @@schema("eatpicker")
+}

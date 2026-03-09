@@ -1,0 +1,19 @@
+{
+  "name": "eat-picker",
+  "version": "1.0.0",
+  "author": "Ken Wong",
+  "license": "MIT",
+  "description": "Restaurant recommendation app",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "lint-staged": "^16.3.2"
+  }
+}
