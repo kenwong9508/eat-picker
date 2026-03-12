@@ -6,14 +6,14 @@
   "description": "Restaurant recommendation app",
   "main": "backend/server.js",
   "scripts": {
+    "dev:backend:install": "cd backend && npm install",
     "dev:backend": "cd backend && npm run dev",
+    "dev:frontend:install": "cd frontend && npm install",
     "dev:frontend": "cd frontend && npm run dev",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "install:all": "cd backend && npm install && cd ../frontend && npm install",
     "prepare": "husky"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
-    "lint-staged": "^16.3.2"
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.4"
   }
 }
