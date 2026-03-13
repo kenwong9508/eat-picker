@@ -6,8 +6,9 @@
   "main": "dist/server.js",
   "type": "commonjs",
   "scripts": {
+    "dev": "nodemon --watch src --ext ts,json --exec \"ts-node -r tsconfig-paths/register src/server.ts\"",
     "dev:old": "nodemon --exec ts-node src/server.ts",
-    "dev": "nodemon --exec \"ts-node -r tsconfig-paths/register src/server.ts\"",
+    "dev:old2": "nodemon --exec \"ts-node -r tsconfig-paths/register src/server.ts\"",
     "start:prod": "NODE_ENV=production node dist/server.js",
     "build": "npm run db:prod && tsc",
     "db:prod": "npm run db:migrate:prod && npm run db:generate",
@@ -37,7 +38,8 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "winston-daily-rotate-file": "^5.0.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

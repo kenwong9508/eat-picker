@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import logger from '$logger';
 import healthRoutes from './routes/health';
 import docsRoutes from './routes/doc';
+import restaurantRoutes from './routes/restaurants';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -19,9 +20,12 @@ app.use(
   })
 );
 
-// Routes
+// Normal Routes
 app.use(healthRoutes);
 app.use(docsRoutes);
+app.use('/api/restaurants', restaurantRoutes);
+
+// 404
 app.use((req, res) => {
   res.status(404).json({ error: 'API not found' });
 });
