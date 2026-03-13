@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { RestaurantService } from '../services/restaurantService';
-import { getRestaurantsSchema } from '../validators/restaurants';
+import {
+  getRestaurantsSchema,
+  createRestaurantSchema,
+} from '../validators/restaurants';
 import { z } from 'zod';
 import logger from '$logger';
 
@@ -20,5 +23,24 @@ export const getRestaurants = async (
     res
       .status(500)
       .json({ error: 'Internal server error' });
+  }
+};
+
+export const createRestaurant = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = req.validatedBody as z.infer<
+      typeof createRestaurantSchema
+    >;
+    const restaurant =
+      await RestaurantService.createRestaurant(data);
+    res.status(201).json(restaurant);
+  } catch (error) {
+    console.error('Create restaurant error:', error);
+    res
+      .status(500)
+      .json({ error: 'Failed to create restaurant' });
   }
 };

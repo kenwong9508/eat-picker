@@ -1,9 +1,15 @@
 import { prisma } from '$config/db';
 import { z } from 'zod';
-import { getRestaurantsSchema } from '../validators/restaurants';
+import {
+  createRestaurantSchema,
+  getRestaurantsSchema,
+} from '../validators/restaurants';
 
 type GetRestaurantsParams = z.infer<
   typeof getRestaurantsSchema
+>;
+type CreateRestaurantParams = z.infer<
+  typeof createRestaurantSchema
 >;
 
 export class RestaurantService {
@@ -32,5 +38,25 @@ export class RestaurantService {
         hasNext: page * limit < total,
       },
     };
+  }
+  static async createRestaurant(
+    params: CreateRestaurantParams
+  ) {
+    const data = createRestaurantSchema.parse(params);
+
+    const restaurant = await prisma.restaurant.create({
+      data: {
+        name: data.name,
+        avgPrice: data.avg_price,
+        speed: data.speed,
+        cuisine: data.cuisine,
+        takeaway: data.takeaway ?? false,
+        dineIn: data.dine_in ?? true,
+        active: data.active ?? true,
+        address: data.address,
+      },
+    });
+
+    return restaurant;
   }
 }
