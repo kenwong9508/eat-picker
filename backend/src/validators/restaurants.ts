@@ -38,3 +38,14 @@ export const createRestaurantSchema = z.object({
   active: z.boolean().default(true),
   address: z.string().optional(),
 });
+
+export const updateRestaurantSchema = z.object({
+  name: z.string().min(1).max(256).optional(),
+  avg_price: z.coerce.number().min(1).optional(),
+  speed: SpeedEnum.optional(),
+  cuisine: CuisineEnum.optional(),
+  takeaway: z.boolean().optional(),
+  dine_in: z.boolean().optional(),
+  active: z.boolean().optional(),
+  address: z.string().optional(),
+});
