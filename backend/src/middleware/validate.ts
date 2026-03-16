@@ -1,14 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
 
-export const validateQuery = (schema: ZodSchema) => {
+const validateField = (
+  reqKey: string,
+  validatedKey: string,
+  schema: ZodSchema
+) => {
   return (
     req: Request,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      req.validatedQuery = schema.parse(req.query);
+      const input = req[reqKey as keyof Request] ?? {};
+      (req as any)[validatedKey] = schema.parse(input);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
@@ -19,30 +24,18 @@ export const validateQuery = (schema: ZodSchema) => {
           })),
         });
       }
-      res.status(500).json({ error: 'Validation failed' });
+      return res
+        .status(500)
+        .json({ error: 'Validation failed' });
     }
   };
 };
 
-export const validateBody = (schema: ZodSchema) => {
-  return (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      req.validatedBody = schema.parse(req.body);
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(400).json({
-          errors: error.issues.map((issue) => ({
-            path: issue.path,
-            message: issue.message,
-          })),
-        });
-      }
-      res.status(500).json({ error: 'Validation failed' });
-    }
-  };
-};
+export const validate = {
+  query: (schema: ZodSchema) =>
+    validateField('query', 'validatedQuery', schema),
+  params: (schema: ZodSchema) =>
+    validateField('params', 'validatedParams', schema),
+  body: (schema: ZodSchema) =>
+    validateField('body', 'validatedBody', schema),
+} as const;

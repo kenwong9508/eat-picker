@@ -3,9 +3,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import logger from '$logger';
-import healthRoutes from './routes/health';
-import docsRoutes from './routes/doc';
-import restaurantRoutes from './routes/restaurants';
+import healthRoutes from './routes/health.route';
+import docsRoutes from './routes/doc.route';
+import restaurantRoutes from './routes/restaurants.route';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
