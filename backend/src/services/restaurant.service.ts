@@ -62,6 +62,17 @@ export class RestaurantService extends BaseService {
       throw new RestaurantValidationError(errorMessage);
     }
 
+    // check if id exist in database
+    try {
+      await this.prisma.restaurant.findUniqueOrThrow({
+        where: { id },
+      });
+    } catch (error) {
+      const err = new RestaurantNotFoundError();
+      logger.warn(err?.message);
+      throw err;
+    }
+
     return await this.prisma.restaurant.update({
       where: { id },
       data: body,
