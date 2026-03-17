@@ -68,14 +68,14 @@ export class RestaurantsController extends BaseController {
     }
   };
 
-  recommendRestaurants = async (
+  recommendRestaurant = async (
     req: Request,
     res: Response
   ): Promise<void> => {
     try {
       const params = req.validatedQuery as RecommendQuery;
       const restaurant =
-        await this.service.recommendRestaurants(params);
+        await this.service.recommendRestaurant(params);
       this.sendSuccess(res, restaurant);
     } catch (error) {
       this.sendError(res, error);

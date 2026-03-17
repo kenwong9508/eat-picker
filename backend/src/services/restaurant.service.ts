@@ -71,7 +71,7 @@ export class RestaurantService extends BaseService {
     });
   }
 
-  async recommendRestaurants(params: RecommendQuery) {
+  async recommendRestaurant(params: RecommendQuery) {
     const where: any = { active: true };
 
     if (params.budget) {

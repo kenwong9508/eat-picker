@@ -40,7 +40,7 @@ export class RestaurantsRoute extends BaseRoute {
     this.router.get(
       '/recommend',
       validate.query(schemas.recommendQuery),
-      this.controller.recommendRestaurants.bind(
+      this.controller.recommendRestaurant.bind(
         this.controller
       )
     );
