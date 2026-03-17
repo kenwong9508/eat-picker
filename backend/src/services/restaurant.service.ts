@@ -57,12 +57,9 @@ export class RestaurantService extends BaseService {
     body: UpdateRestaurantBody
   ) {
     if (Object.keys(body).length === 0) {
-      logger.warn(
-        `Update restaurant id ${id}: No fields provided for update`
-      );
-      throw new RestaurantValidationError(
-        'No fields provided for update'
-      );
+      const errorMessage = `restaurant id ${id}: No fields provided for update`;
+      logger.warn(errorMessage);
+      throw new RestaurantValidationError(errorMessage);
     }
 
     return await this.prisma.restaurant.update({
