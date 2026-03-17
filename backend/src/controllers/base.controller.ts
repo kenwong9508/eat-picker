@@ -7,7 +7,7 @@ export abstract class BaseController {
     data: any,
     status = 200
   ) {
-    res.status(status).json({ success: true, data });
+    res.status(status).json({ results: data });
   }
 
   protected sendError(
@@ -16,8 +16,11 @@ export abstract class BaseController {
     status = 500
   ) {
     logger.error('Controller error:', error);
-    res
-      .status(status)
-      .json({ success: false, error: error.message });
+    res.status(error?.httpStatus).json({
+      error: {
+        code: error?.code,
+        message: error?.message,
+      },
+    });
   }
 }

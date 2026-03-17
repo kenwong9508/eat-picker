@@ -53,6 +53,11 @@ export const schemas = {
     active: z.boolean().optional(),
     address: z.string().optional(),
   }),
+  recommendQuery: z.object({
+    budget: z.coerce.number().min(1),
+    speed: SpeedEnum,
+    cuisine: CuisineEnum,
+  }),
 };
 
 export type GetRestaurantsQuery = z.infer<
@@ -68,4 +73,8 @@ export type UpdateRestaurantParams = z.infer<
 >;
 export type UpdateRestaurantBody = z.infer<
   typeof schemas.updateRestaurantBody
+>;
+
+export type RecommendQuery = z.infer<
+  typeof schemas.recommendQuery
 >;

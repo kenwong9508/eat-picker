@@ -3,10 +3,14 @@ import { BaseService } from './base.service';
 import {
   CreateRestaurantBody,
   GetRestaurantsQuery,
+  RecommendQuery,
   UpdateRestaurantBody,
 } from '../validators/restaurants';
 import logger from '$logger';
-import { RestaurantValidationError } from 'errors/restaurant.error';
+import {
+  RestaurantNotFoundError,
+  RestaurantValidationError,
+} from 'errors/restaurant.error';
 
 export class RestaurantService extends BaseService {
   async getRestaurants(params: GetRestaurantsQuery) {
@@ -22,7 +26,7 @@ export class RestaurantService extends BaseService {
     ]);
 
     return {
-      data: restaurants,
+      restaurants,
       pagination: {
         page,
         limit,
@@ -65,5 +69,40 @@ export class RestaurantService extends BaseService {
       where: { id },
       data: body,
     });
+  }
+
+  async recommendRestaurants(params: RecommendQuery) {
+    const where: any = { active: true };
+
+    if (params.budget) {
+      where.avgPrice = { lte: params.budget };
+    }
+    if (params.speed) {
+      where.speed = params.speed;
+    }
+    if (params.cuisine) {
+      where.cuisine = params.cuisine;
+    }
+
+    const count = await this.prisma.restaurant.count({
+      where,
+    });
+    if (count === 0) {
+      const error = new RestaurantNotFoundError();
+      const errorMessage = error?.message;
+      logger.warn(errorMessage);
+      throw error;
+    }
+
+    // Random choose ONE restaurant
+    const skip = Math.floor(Math.random() * count);
+    const [restaurant] =
+      await this.prisma.restaurant.findMany({
+        where,
+        skip,
+        take: 1,
+      });
+
+    return restaurant;
   }
 }

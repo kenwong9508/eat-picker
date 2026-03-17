@@ -1,5 +1,5 @@
 export class BaseError extends Error {
-  public readonly code: number;
+  public readonly code: string;
   public readonly httpStatus: number;
 
   constructor({
@@ -7,7 +7,7 @@ export class BaseError extends Error {
     message,
     httpStatus,
   }: {
-    code: number;
+    code: string;
     message: string;
     httpStatus: number;
   }) {

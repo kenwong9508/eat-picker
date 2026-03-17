@@ -21,19 +21,28 @@ export class RestaurantsRoute extends BaseRoute {
       this.controller.getRestaurants.bind(this.controller)
     );
 
-    // POST /api/restaurants → body
+    // POST /api/restaurants
     this.router.post(
       '/',
       validate.body(schemas.createRestaurantBody),
       this.controller.createRestaurant.bind(this.controller)
     );
 
-    // PATCH /api/restaurants/:id → params + body
+    // PATCH /api/restaurants/:id
     this.router.patch(
       '/:id',
       validate.params(schemas.updateRestaurantParams),
       validate.body(schemas.updateRestaurantBody),
       this.controller.updateRestaurant.bind(this.controller)
+    );
+
+    // GET /api/restaurants/recommend?budget=100&speed=fast&cuisine=chinese
+    this.router.get(
+      '/recommend',
+      validate.query(schemas.recommendQuery),
+      this.controller.recommendRestaurants.bind(
+        this.controller
+      )
     );
   }
 }

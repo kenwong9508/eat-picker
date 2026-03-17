@@ -3,11 +3,13 @@ import { RestaurantService } from '../services/restaurant.service';
 import {
   CreateRestaurantBody,
   GetRestaurantsQuery,
+  RecommendQuery,
   schemas,
   UpdateRestaurantBody,
   UpdateRestaurantParams,
 } from '../validators/restaurants';
 import { BaseController } from './base.controller';
+import logger from '$logger';
 
 export class RestaurantsController extends BaseController {
   private service: RestaurantService;
@@ -17,7 +19,6 @@ export class RestaurantsController extends BaseController {
     this.service = new RestaurantService();
   }
 
-  // ✅ GET /api/restaurants
   getRestaurants = async (
     req: Request,
     res: Response
@@ -33,7 +34,6 @@ export class RestaurantsController extends BaseController {
     }
   };
 
-  // ✅ POST /api/restaurants
   createRestaurant = async (
     req: Request,
     res: Response
@@ -49,7 +49,6 @@ export class RestaurantsController extends BaseController {
     }
   };
 
-  // ✅ PATCH /api/restaurants/:id
   updateRestaurant = async (
     req: Request,
     res: Response
@@ -65,6 +64,20 @@ export class RestaurantsController extends BaseController {
       );
       this.sendSuccess(res, updated);
     } catch (error: any) {
+      this.sendError(res, error);
+    }
+  };
+
+  recommendRestaurants = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const params = req.validatedQuery as RecommendQuery;
+      const restaurant =
+        await this.service.recommendRestaurants(params);
+      this.sendSuccess(res, restaurant);
+    } catch (error) {
       this.sendError(res, error);
     }
   };

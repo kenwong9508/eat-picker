@@ -1,3 +1,4 @@
+import { ValidationError } from 'errors/validation.error';
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
 
@@ -16,17 +17,27 @@ const validateField = (
       (req as any)[validatedKey] = schema.parse(input);
       next();
     } catch (error) {
+      let errorMessage: string;
+
       if (error instanceof ZodError) {
-        return res.status(400).json({
-          errors: error.issues.map((issue) => ({
-            path: issue.path,
-            message: issue.message,
-          })),
-        });
+        errorMessage = error.issues
+          .map(
+            (issue) =>
+              `${issue.path.join('.')}: ${issue.message}`
+          )
+          .join('; ');
+      } else {
+        errorMessage = 'Middleware Validation failed';
       }
-      return res
-        .status(500)
-        .json({ error: 'Validation failed' });
+
+      const valError = new ValidationError(errorMessage);
+
+      return res.status(valError.httpStatus).json({
+        error: {
+          code: valError.code,
+          message: valError.message,
+        },
+      });
     }
   };
 };
