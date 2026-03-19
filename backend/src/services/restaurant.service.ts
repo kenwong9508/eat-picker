@@ -39,16 +39,7 @@ export class RestaurantService extends BaseService {
 
   async createRestaurant(body: CreateRestaurantBody) {
     return await this.prisma.restaurant.create({
-      data: {
-        name: body.name,
-        avgPrice: body.avg_price,
-        speed: body.speed,
-        cuisine: body.cuisine,
-        takeaway: body.takeaway,
-        dineIn: body.dine_in,
-        active: body.active,
-        address: body.address,
-      },
+      data: body,
     });
   }
 
