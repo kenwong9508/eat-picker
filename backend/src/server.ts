@@ -23,7 +23,7 @@ app.use(
 // Normal Routes
 app.use(healthRoutes);
 app.use(docsRoutes);
-app.use('/api/restaurants', restaurantRoutes);
+app.use('/api', restaurantRoutes);
 
 // 404
 app.use((req, res) => {
