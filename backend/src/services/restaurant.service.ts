@@ -10,7 +10,7 @@ import logger from '$logger';
 import {
   RestaurantNotFoundError,
   RestaurantValidationError,
-} from 'errors/restaurant.error';
+} from '../errors/restaurant.error';
 
 export class RestaurantService extends BaseService {
   async getRestaurants(params: GetRestaurantsQuery) {
