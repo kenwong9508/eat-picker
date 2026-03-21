@@ -64,6 +64,24 @@ describe('getRestaurants', () => {
 
     expect(result.pagination.hasNext).toBe(false);
   });
+  it('should return empty array if no data in database', async () => {
+    prismaMock.restaurant.findMany.mockResolvedValue([]);
+    prismaMock.restaurant.count.mockResolvedValue(0);
+
+    const result = await service.getRestaurants({
+      page: 1,
+      limit: 2,
+    });
+
+    expect(result.restaurants).toHaveLength(0);
+    expect(result.pagination).toEqual({
+      page: 1,
+      limit: 2,
+      total: 0,
+      pages: 0,
+      hasNext: false,
+    });
+  });
 });
 
 // ============================================================
