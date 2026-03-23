@@ -14,9 +14,8 @@ import logger from '$logger';
 export class RestaurantsController extends BaseController {
   private service: RestaurantService;
 
-  constructor() {
     super();
-    this.service = new RestaurantService();
+    this.service = service ?? new RestaurantService();
   }
 
   getRestaurants = async (
