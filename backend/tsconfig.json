@@ -1,7 +1,5 @@
 {
-  "ts-node": {
-    "files": true
-  },
+  "ts-node": { "files": true },
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
@@ -16,5 +14,13 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "**/*test*",
+    "**/*swagger*",
+    "tests",
+    "swagger",
+    "jest.config.*"
+  ]
 }
