@@ -6,6 +6,9 @@ import logger from '$logger';
 import healthRoutes from './routes/health.route';
 import docsRoutes from './routes/doc.route';
 import restaurantRoutes from './routes/restaurants.route';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
