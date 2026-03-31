@@ -7,10 +7,9 @@
   "type": "commonjs",
   "scripts": {
     "dev": "nodemon --watch src --ext ts,json --exec \"ts-node -r tsconfig-paths/register src/server.ts\"",
+    "build": "npm run db:generate && tsc && tsc-alias -p tsconfig.json",
+    "start": "node dist/server.js",
     "build:nodb": "tsc && tsc-alias -p tsconfig.json",
-    "build": "npm run db:prod && tsc && tsc-alias -p tsconfig.json",
-    "start:pm2": "pm2 start dist/server.js --name eat-picker-backend",
-    "start:prod": "NODE_ENV=production node dist/server.js",
     "db:prod": "npm run db:migrate:prod && npm run db:generate",
     "db:migrate:prod": "prisma migrate deploy --schema=./prisma/schema",
     "db:dev": "npm run db:migrate && npm run db:generate",
