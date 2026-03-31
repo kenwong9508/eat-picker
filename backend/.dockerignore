@@ -1,0 +1,29 @@
+# Dependencies & build output
+node_modules
+dist
+coverage
+.nyc_output
+
+# Local env & secrets (inject at runtime)
+.env
+.env.*
+
+# Git & editor
+.git
+.gitignore
+.cursor
+*.md
+
+# Tests & tooling (not needed in image)
+src/tests
+**/*.test.ts
+jest.config.ts
+eslint.config.mjs
+.prettierrc
+
+# Husky / hooks (repo root if copied by mistake)
+.husky
+
+# Logs
+*.log
+npm-debug.log*
