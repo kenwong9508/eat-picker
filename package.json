@@ -15,5 +15,9 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^15.2.4"
+  },
+  "lint-staged": {
+    "backend/src/**/*.{ts,js}": "npm run lint --prefix backend",
+    "frontend/src/**/*.{ts,tsx,js,jsx}": "npm run lint --prefix frontend"
   }
 }
