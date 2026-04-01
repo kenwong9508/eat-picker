@@ -4,12 +4,10 @@ import {
   CreateRestaurantBody,
   GetRestaurantsQuery,
   RecommendQuery,
-  schemas,
   UpdateRestaurantBody,
   UpdateRestaurantParams,
 } from '../validators/restaurants';
 import { BaseController } from './base.controller';
-import logger from '$logger';
 
 export class RestaurantsController extends BaseController {
   private service: RestaurantService;

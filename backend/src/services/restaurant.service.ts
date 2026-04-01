@@ -59,7 +59,7 @@ export class RestaurantService extends BaseService {
       });
     } catch (error) {
       const err = new RestaurantNotFoundError();
-      logger.warn(err?.message);
+      logger.warn(error);
       throw err;
     }
 

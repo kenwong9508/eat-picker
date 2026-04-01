@@ -1,4 +1,3 @@
-import { Router } from 'express';
 import { validate } from '../middleware/validate';
 import { schemas } from '../validators/restaurants';
 import { RestaurantsController } from '../controllers/restaurants.controller';
