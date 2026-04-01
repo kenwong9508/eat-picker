@@ -3,7 +3,14 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['node_modules/', 'dist/'] },
+  {
+    ignores: [
+      'node_modules/',
+      'dist/**',
+      'src/swagger/**',
+      'src/tests/**',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -37,5 +44,5 @@ export default tseslint.config(
       // 呢條規則需要 type information，只喺 TS 檔度開
       '@typescript-eslint/no-floating-promises': 'error',
     },
-  },
+  }
 );
