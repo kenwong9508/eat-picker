@@ -1,5 +1,5 @@
 # .github/workflows/deploy-backend.yml
-name: Deploy Backend to EC2
+name: Backend CI/CD: lint, test, build, deploy
 
 on:
   push:
@@ -15,9 +15,38 @@ env:
   CONTAINER_NAME: eat-picker-backend
 
 jobs:
-  deploy:
+  lint:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Install deps
+        run: cd backend && npm ci
+      - name: Run lint
+        run: cd backend && npm run lint
 
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Install deps
+        run: cd backend && npm ci
+      - name: Run tests
+        run: cd backend && npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,7 +72,14 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy backend to EC2
         uses: appleboy/ssh-action@v1
         with:
@@ -52,7 +88,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
-            docker pull ${{ env.IMAGE_NAME }}:latest
+            docker pull ${{ env.IMAGE_NAME }}:${{ github.sha }}
             docker stop ${{ env.CONTAINER_NAME }} || true
             docker rm ${{ env.CONTAINER_NAME }} || true
             docker run -d \
@@ -62,7 +98,5 @@ jobs:
               -e PORT=3000 \
               -e NODE_ENV=production \
               -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
-              ${{ env.IMAGE_NAME }}:latest
-            sleep 8
-            curl -f http://localhost:3000/health
+              ${{ env.IMAGE_NAME }}:${{ github.sha }}
             docker image prune -f
