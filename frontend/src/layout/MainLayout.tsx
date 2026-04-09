@@ -230,8 +230,26 @@ export function MainLayout() {
               </NavLink>
             ))}
           </nav>
-
+          {/* desktop theme button + mobile menu button */}
           <div className="flex items-center gap-2">
+            {/* Desktop theme toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="hidden items-center gap-2 rounded-xl border border-stone-900/10 bg-white px-3 py-1.5 text-sm font-medium text-stone-900 shadow-sm hover:bg-stone-50 md:inline-flex dark:border-white/10 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800 cursor-pointer"
+              aria-label="Toggle theme"
+            >
+              <span className="flex items-center gap-2">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-stone-100 text-teal-700 dark:bg-stone-800 dark:text-teal-300">
+                  {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                </span>
+                <span className="hidden text-xs font-semibold sm:inline">
+                  {theme === "dark" ? "Dark mode" : "Light mode"}
+                </span>
+              </span>
+            </button>
+
+            {/* Mobile menu button */}
             <button
               type="button"
               className="inline-grid h-11 w-11 place-items-center rounded-xl border border-stone-900/10 bg-white text-stone-900 md:hidden dark:border-white/10 dark:bg-stone-900 dark:text-stone-100"
@@ -242,6 +260,8 @@ export function MainLayout() {
             </button>
           </div>
         </header>
+
+        {/* Mobile drawer */}
         <div
           className={[
             "fixed inset-0 z-50 md:hidden",
