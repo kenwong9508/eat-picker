@@ -1,27 +1,27 @@
-import { useState } from "react";
-import {
-  useRestaurantsQuery,
-  useCreateRestaurantMutation,
-  useDeleteRestaurantMutation,
-} from "../hooks/useRestaurants";
-import { RestaurantForm, RestaurantFormValues } from "./RestaurantForm";
-import type { Restaurant } from "../api/restaurants";
+// import { useState } from "react";
+// import {
+//   useRestaurantsQuery,
+//   useCreateRestaurantMutation,
+//   useDeleteRestaurantMutation,
+// } from "../hooks/useRestaurants";
+// import { RestaurantForm, RestaurantFormValues } from "./RestaurantForm";
+// import type { Restaurant } from "../api/restaurants";
 
 export function RestaurantsPage() {
-  const { data, isLoading, isError } = useRestaurantsQuery();
-  const createMutation = useCreateRestaurantMutation();
-  const deleteMutation = useDeleteRestaurantMutation();
-  const [isCreating, setIsCreating] = useState(false);
+  // const { data, isLoading, isError } = useRestaurantsQuery();
+  // const createMutation = useCreateRestaurantMutation();
+  // const deleteMutation = useDeleteRestaurantMutation();
+  // const [isCreating, setIsCreating] = useState(false);
 
-  const handleCreate = async (values: RestaurantFormValues) => {
-    await createMutation.mutateAsync(values);
-    setIsCreating(false);
-  };
+  // const handleCreate = async (values: RestaurantFormValues) => {
+  //   await createMutation.mutateAsync(values);
+  //   setIsCreating(false);
+  // };
 
-  const handleDelete = async (restaurant: Restaurant) => {
-    if (!window.confirm(`Delete restaurant "${restaurant.name}"?`)) return;
-    await deleteMutation.mutateAsync(restaurant.id);
-  };
+  // const handleDelete = async (restaurant: Restaurant) => {
+  //   if (!window.confirm(`Delete restaurant "${restaurant.name}"?`)) return;
+  //   await deleteMutation.mutateAsync(restaurant.id);
+  // };
 
   return (
     <div>Restaurants Page</div>
