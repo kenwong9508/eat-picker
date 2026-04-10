@@ -11,7 +11,7 @@ export async function fetchRecommendRestaurant(
   );
 
   if ("error" in res) {
-    throw new Error(res.error.message);
+    throw new Error(res?.error?.message ?? "Unknown error");
   }
 
   return res.data;

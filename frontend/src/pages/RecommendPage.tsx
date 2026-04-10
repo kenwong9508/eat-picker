@@ -26,9 +26,10 @@ export function RecommendPage() {
     speed: "",
     cuisine: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [formErrors, setFromErrors] = useState<FormErrors>({});
 
-  const { getRecommend, data, isLoading, isError, error } = useRecommend();
+  const { getRecommend, data, isLoading, isApiError, apiError } =
+    useRecommend();
 
   const validate = (): boolean => {
     const nextErrors: FormErrors = {};
@@ -48,7 +49,7 @@ export function RecommendPage() {
       nextErrors.cuisine = "Please select a cuisine";
     }
 
-    setErrors(nextErrors);
+    setFromErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
   };
 
@@ -99,8 +100,8 @@ export function RecommendPage() {
               placeholder="e.g. 50"
             />
           </div>
-          {errors.budget && (
-            <p className="text-xs text-red-500">{errors.budget}</p>
+          {formErrors.budget && (
+            <p className="text-xs text-red-500">{formErrors.budget}</p>
           )}
         </div>
 
@@ -137,8 +138,8 @@ export function RecommendPage() {
               );
             })}
           </div>
-          {errors.speed && (
-            <p className="text-xs text-red-500">{errors.speed}</p>
+          {formErrors.speed && (
+            <p className="text-xs text-red-500">{formErrors.speed}</p>
           )}
         </div>
 
@@ -173,8 +174,8 @@ export function RecommendPage() {
               );
             })}
           </div>
-          {errors.cuisine && (
-            <p className="text-xs text-red-500">{errors.cuisine}</p>
+          {formErrors.cuisine && (
+            <p className="text-xs text-red-500">{formErrors.cuisine}</p>
           )}
         </div>
 
@@ -186,7 +187,13 @@ export function RecommendPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="inline-flex items-center gap-2 rounded-2xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:bg-teal-700/70 dark:bg-teal-500 dark:hover:bg-teal-400"
+            className="inline-flex items-center gap-2 rounded-2xl 
+              bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white 
+              shadow-sm transition hover:bg-teal-800 
+              disabled:bg-stone-500 disabled:text-stone-200 
+              disabled:shadow-none disabled:hover:bg-stone-500 
+              disabled:cursor-not-allowed 
+              dark:bg-teal-500 dark:hover:bg-teal-400"
           >
             {isLoading ? "Finding..." : "Find restaurant"}
           </button>
@@ -195,14 +202,13 @@ export function RecommendPage() {
 
       {/* Result */}
       <section className="mt-2">
-        {isError && (
+        {isApiError && (
           <p className="rounded-2xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/60 dark:bg-red-950/40 dark:text-red-200">
-            Something went wrong:{" "}
-            {(error as Error)?.message ?? "Please try again"}
+            Error: {apiError?.message}
           </p>
         )}
 
-        {!isLoading && data && (
+        {data && (
           <div className="mt-3 rounded-3xl border border-stone-200 bg-gradient-to-br from-amber-50 to-stone-50 p-4 shadow-sm dark:border-stone-700 dark:from-stone-900 dark:to-stone-950">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-teal-700 dark:text-teal-300">
               Today&apos;s pick
@@ -210,12 +216,20 @@ export function RecommendPage() {
             <h2 className="mt-1 text-xl font-bold text-stone-900 dark:text-stone-50">
               {data.name}
             </h2>
-            <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
-              {data.cuisine} · Avg {data.avgPrice} · {data.speed}
-            </p>
-            <p className="mt-2 text-sm text-stone-600 dark:text-stone-300">
+            <div className="mt-2 text-sm text-stone-600 dark:text-stone-300">
               {data.address}
-            </p>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-200">
+              <span className="rounded-full bg-stone-800 px-3 py-1">
+                Avg price: {data.avgPrice}
+              </span>
+              <span className="rounded-full bg-stone-800 px-3 py-1">
+                Speed: {data.speed}
+              </span>
+              <span className="rounded-full bg-stone-800 px-3 py-1">
+                Cuisine: {data.cuisine}
+              </span>
+            </div>
           </div>
         )}
       </section>

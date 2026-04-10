@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -7,12 +7,18 @@ export const apiClient = axios.create({
   },
 });
 
-apiClient.interceptors.response.use(
-  (response) => response.data,
-  (error) => Promise.reject(error),
-);
+export async function apiGet<T>(url: string, config?: AxiosRequestConfig) {
+  try {
+    const res = await apiClient.get<T>(url, config);
+    return res.data as T;
+  } catch (err) {
+    const error = err as AxiosError<T>;
 
-// 幫自己封一層，令 get<T> 真係回 T（唔係 unknown）
-export function apiGet<T>(url: string, config?: AxiosRequestConfig) {
-  return apiClient.get<T>(url, config) as Promise<T>;
+    // backend response
+    if (error.response?.data) {
+      return error.response.data as T;
+    }
+
+    throw new Error(error.message);
+  }
 }

@@ -25,7 +25,7 @@ export function useRecommend() {
     getRecommend: mutate,
     data,
     isLoading: isPending,
-    isError,
-    error,
+    isApiError: isError,
+    apiError: error,
   };
 }
