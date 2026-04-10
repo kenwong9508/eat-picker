@@ -1,60 +1,224 @@
-import { useState } from "react";
-import { useRecommendRestaurant } from "../hooks/useRecommend";
-import type { Cuisine } from "../api/restaurants";
+// src/pages/RecommendPage.tsx
+import { FormEvent, useState } from "react";
+import { useRecommend } from "../hooks/useRecommend";
+import {
+  Cuisine,
+  CUISINES,
+  Speed,
+  SPEED_OPTIONS,
+} from "../constants/restaurant";
+
+interface FormState {
+  budget: string;
+  speed: Speed | "";
+  cuisine: Cuisine | "";
+}
+
+interface FormErrors {
+  budget?: string;
+  speed?: string;
+  cuisine?: string;
+}
 
 export function RecommendPage() {
-  const [cuisine, setCuisine] = useState<Cuisine | "">("");
-  const { data, isFetching, refetch, isError } = useRecommendRestaurant(
-    cuisine ? { cuisine } : {},
-  );
+  const [form, setForm] = useState<FormState>({
+    budget: "",
+    speed: "",
+    cuisine: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const { getRecommend, data, isLoading, isError, error } = useRecommend();
+
+  const validate = (): boolean => {
+    const nextErrors: FormErrors = {};
+
+    const budgetNumber = Number(form.budget);
+    if (!form.budget) {
+      nextErrors.budget = "Please enter a budget amount";
+    } else if (Number.isNaN(budgetNumber) || budgetNumber <= 0) {
+      nextErrors.budget = "Budget must be a number greater than 0";
+    }
+
+    if (!form.speed) {
+      nextErrors.speed = "Please select a speed";
+    }
+
+    if (!form.cuisine) {
+      nextErrors.cuisine = "Please select a cuisine";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    getRecommend({
+      budget: Number(form.budget),
+      speed: form.speed as Speed,
+      cuisine: form.cuisine as Cuisine,
+    });
+  };
 
   return (
-    <div>Recommend Page</div>
-    // <div>
-    //   <h1>Recommend Restaurant</h1>
+    <div className="mx-auto flex max-w-3xl flex-col gap-6 rounded-3xl bg-white/80 p-4 shadow-sm backdrop-blur sm:p-6 dark:bg-stone-900/80">
+      <header className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+        <div>
+          <h1 className="text-xl font-bold sm:text-2xl">
+            Recommend restaurant
+          </h1>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+            Tell us your budget, speed and cuisine. We will pick one restaurant
+            for you today.
+          </p>
+        </div>
+      </header>
 
-    //   <div style={{ marginBottom: "12px" }}>
-    //     <label>Cuisine </label>
-    //     <select
-    //       value={cuisine}
-    //       onChange={(e) => setCuisine(e.target.value as Cuisine | "")}
-    //     >
-    //       <option value="">Any</option>
-    //       <option value="chinese">Chinese</option>
-    //       <option value="japanese">Japanese</option>
-    //       <option value="western">Western</option>
-    //       <option value="other">Other</option>
-    //     </select>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {/* Budget */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-semibold text-stone-800 dark:text-stone-100">
+            Budget (HKD)
+          </label>
+          <div className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-stone-50 px-3 py-2.5 focus-within:border-teal-600 focus-within:bg-teal-600/10 dark:border-stone-700 dark:bg-stone-800 dark:focus-within:border-teal-300">
+            <span className="text-sm text-stone-500 dark:text-stone-400">
+              $
+            </span>
+            <input
+              type="number"
+              min={1}
+              step={1}
+              value={form.budget}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, budget: e.target.value }))
+              }
+              className="h-7 flex-1 bg-transparent text-sm outline-none placeholder:text-stone-400 dark:placeholder:text-stone-500"
+              placeholder="e.g. 50"
+            />
+          </div>
+          {errors.budget && (
+            <p className="text-xs text-red-500">{errors.budget}</p>
+          )}
+        </div>
 
-    //     <button
-    //       onClick={() => refetch()}
-    //       disabled={isFetching}
-    //       style={{ marginLeft: 8 }}
-    //     >
-    //       {isFetching ? "Loading..." : "Recommend"}
-    //     </button>
-    //   </div>
+        {/* Speed */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-semibold text-stone-800 dark:text-stone-100">
+            Speed
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {SPEED_OPTIONS.map((option) => {
+              const isActive = form.speed === option.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() =>
+                    setForm((prev) => ({
+                      ...prev,
+                      speed: option.value as Speed,
+                    }))
+                  }
+                  className={[
+                    "flex flex-col items-start gap-0.5 rounded-2xl border px-3 py-2.5 text-left text-sm transition",
+                    isActive
+                      ? "border-teal-600 bg-teal-600/10 text-teal-800 dark:border-teal-300 dark:bg-teal-300/10 dark:text-teal-100"
+                      : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-300 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100",
+                  ].join(" ")}
+                >
+                  <span className="font-semibold">{option.label}</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400">
+                    {option.hint}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {errors.speed && (
+            <p className="text-xs text-red-500">{errors.speed}</p>
+          )}
+        </div>
 
-    //   {isError && <p>Failed to fetch recommendation.</p>}
+        {/* Cuisine */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-semibold text-stone-800 dark:text-stone-100">
+            Cuisine
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {CUISINES.map((value) => {
+              const isActive = form.cuisine === value;
+              const label =
+                value === "fastfood"
+                  ? "Fast food"
+                  : value.charAt(0).toUpperCase() + value.slice(1);
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() =>
+                    setForm((prev) => ({ ...prev, cuisine: value as Cuisine }))
+                  }
+                  className={[
+                    "rounded-2xl border px-3 py-2 text-sm transition",
+                    isActive
+                      ? "border-teal-600 bg-teal-600/10 text-teal-800 dark:border-teal-300 dark:bg-teal-300/10 dark:text-teal-100"
+                      : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-300 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100",
+                  ].join(" ")}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+          {errors.cuisine && (
+            <p className="text-xs text-red-500">{errors.cuisine}</p>
+          )}
+        </div>
 
-    //   {data && (
-    //     <div
-    //       style={{
-    //         border: "1px solid #ddd",
-    //         padding: "12px",
-    //         borderRadius: "4px",
-    //         maxWidth: 400,
-    //       }}
-    //     >
-    //       <h2>{data.name}</h2>
-    //       <p>Cuisine: {data.cuisine}</p>
-    //       <p>Average Price: {data.avgPrice}</p>
-    //       <p>Speed: {data.speed}</p>
-    //       <p>Takeaway: {data.takeaway ? "Yes" : "No"}</p>
-    //       <p>Dine In: {data.dineIn ? "Yes" : "No"}</p>
-    //       <p>Address: {data.address}</p>
-    //     </div>
-    //   )}
-    // </div>
+        {/* Submit */}
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs text-stone-500 dark:text-stone-400">
+            Fill all three fields and we will pick one restaurant for you.
+          </p>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 rounded-2xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:bg-teal-700/70 dark:bg-teal-500 dark:hover:bg-teal-400"
+          >
+            {isLoading ? "Finding..." : "Find restaurant"}
+          </button>
+        </div>
+      </form>
+
+      {/* Result */}
+      <section className="mt-2">
+        {isError && (
+          <p className="rounded-2xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/60 dark:bg-red-950/40 dark:text-red-200">
+            Something went wrong:{" "}
+            {(error as Error)?.message ?? "Please try again"}
+          </p>
+        )}
+
+        {!isLoading && data && (
+          <div className="mt-3 rounded-3xl border border-stone-200 bg-gradient-to-br from-amber-50 to-stone-50 p-4 shadow-sm dark:border-stone-700 dark:from-stone-900 dark:to-stone-950">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-teal-700 dark:text-teal-300">
+              Today&apos;s pick
+            </p>
+            <h2 className="mt-1 text-xl font-bold text-stone-900 dark:text-stone-50">
+              {data.name}
+            </h2>
+            <p className="mt-1 text-sm text-stone-600 dark:text-stone-300">
+              {data.cuisine} · Avg {data.avgPrice} · {data.speed}
+            </p>
+            <p className="mt-2 text-sm text-stone-600 dark:text-stone-300">
+              {data.address}
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }
