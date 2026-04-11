@@ -167,7 +167,7 @@ describe('recommendRestaurant', () => {
     expect(result).toEqual(restaurant);
   });
 
-  it('should throw RestaurantNotFoundError when no restaurant matches', async () => {
+  it('should return empty object when no restaurant matches', async () => {
     prismaMock.restaurant.count.mockResolvedValue(0);
 
     await expect(
@@ -176,7 +176,7 @@ describe('recommendRestaurant', () => {
         speed: Speed.fast,
         cuisine: Cuisine.chinese,
       })
-    ).rejects.toThrow(RestaurantNotFoundError);
+    ).resolves.toEqual({});
   });
 
   it('should build where clause correctly with all filters', async () => {

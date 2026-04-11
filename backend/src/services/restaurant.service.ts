@@ -85,11 +85,9 @@ export class RestaurantService extends BaseService {
     const count = await this.prisma.restaurant.count({
       where,
     });
+    // case: no restaurant matches the filters
     if (count === 0) {
-      const error = new RestaurantNotFoundError();
-      const errorMessage = error?.message;
-      logger.warn(errorMessage);
-      throw error;
+      return {};
     }
 
     // Random choose ONE restaurant
