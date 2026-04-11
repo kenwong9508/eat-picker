@@ -106,7 +106,7 @@ function MobileDrawer({
               <p className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-stone-500 dark:text-stone-400">
                 Navigation
               </p>
-              <h2 className="text-lg font-bold leading-tight">eat picker</h2>
+              <h2 className="text-lg font-bold leading-tight">Eat Picker</h2>
             </div>
           </div>
 
@@ -203,7 +203,7 @@ export function MainLayout() {
                   Hong Kong food helper
                 </span>
                 <span className="block text-base font-bold leading-tight sm:text-lg">
-                  eat picker
+                  Eat Picker
                 </span>
               </div>
             </NavLink>
