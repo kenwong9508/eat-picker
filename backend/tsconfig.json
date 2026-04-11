@@ -13,14 +13,8 @@
     },
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["jest", "node"]
   },
-  "include": ["src/**/*"],
-  "exclude": [
-    "**/*test*",
-    "**/*swagger*",
-    "tests",
-    "swagger",
-    "jest.config.*"
-  ]
+  "include": ["src/**/*"]
 }
