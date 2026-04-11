@@ -1,12 +1,8 @@
 // src/pages/RecommendPage.tsx
 import { FormEvent, useState } from "react";
 import { useRecommend } from "../hooks/useRecommend";
-import {
-  Cuisine,
-  CUISINES,
-  Speed,
-  SPEED_OPTIONS,
-} from "../constants/restaurant";
+import { CUISINES, SPEED_OPTIONS } from "../constants/restaurant";
+import { Cuisine, Speed } from "../types/restaurant";
 
 interface FormState {
   budget: string;

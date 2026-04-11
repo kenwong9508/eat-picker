@@ -1,5 +1,5 @@
-import { ApiResponse } from "./types";
-import { RecommendResponse, RecommendRequest } from "../hooks/useRecommend";
+import { ApiResponse } from "../types/api";
+import { RecommendRequest, RecommendResponse } from "../types/recommend";
 import { apiGet } from "./client";
 import { isEmptyObject } from "../utils";
 

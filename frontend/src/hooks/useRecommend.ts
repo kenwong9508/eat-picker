@@ -1,15 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { fetchRecommendRestaurant } from "../api/recommend";
-import { Restaurant } from "../types/restaurant";
-import { Cuisine, Speed } from "../constants/restaurant";
-
-export interface RecommendRequest {
-  budget: number;
-  speed: Speed;
-  cuisine: Cuisine;
-}
-
-export type RecommendResponse = Restaurant;
+import { RecommendRequest, RecommendResponse } from "../types/recommend";
 
 export function useRecommend() {
   const { mutate, data, isPending, isError, error } = useMutation<

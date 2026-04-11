@@ -1,5 +1,3 @@
-// src/api/types.ts
-
 // Generic success wrapper for API responses
 export type ApiSuccess<T> = {
   data: T;
