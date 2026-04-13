@@ -1,16 +1,16 @@
 // frontend/src/api/restaurants.ts
 import type {
-  RestaurantsResponse,
-  RestaurantsRequest,
+  RestaurantsGetResponse,
+  RestaurantsGetRequest,
 } from "../types/restaurant";
 import { apiGet } from "./client";
 import { ApiResponse } from "../types/api";
 import { isEmptyArray } from "../utils";
 
 export async function fetchRestaurants(
-  params: RestaurantsRequest,
-): Promise<RestaurantsResponse> {
-  const res = await apiGet<ApiResponse<RestaurantsResponse>>(
+  params: RestaurantsGetRequest,
+): Promise<RestaurantsGetResponse> {
+  const res = await apiGet<ApiResponse<RestaurantsGetResponse>>(
     "api/restaurants",
     { params },
   );

@@ -14,7 +14,7 @@ export interface Restaurant {
   updatedAt: string;
 }
 
-export interface RestaurantsRequest {
+export interface RestaurantsGetRequest {
   page: number;
   limit: number;
   // 之後加 filter 可以擴充呢度
@@ -23,7 +23,7 @@ export interface RestaurantsRequest {
   // active?: boolean;
 }
 
-export interface RestaurantsResponse {
+export interface RestaurantsGetResponse {
   restaurants: Restaurant[];
   pagination: {
     page: number;

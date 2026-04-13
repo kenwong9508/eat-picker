@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchRestaurants } from "../api/restaurants";
-import type { RestaurantsRequest } from "../types/restaurant";
+import type { RestaurantsGetRequest } from "../types/restaurant";
 
 export function useRestaurants(initialPage = 1, initialLimit = 9) {
-  const [page, setPage] = useState<RestaurantsRequest["page"]>(initialPage);
-  const [limit] = useState<RestaurantsRequest["limit"]>(initialLimit);
+  const [page, setPage] = useState<RestaurantsGetRequest["page"]>(initialPage);
+  const [limit] = useState<RestaurantsGetRequest["limit"]>(initialLimit);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["restaurants", page, limit],
