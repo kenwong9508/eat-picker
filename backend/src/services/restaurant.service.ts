@@ -13,13 +13,18 @@ import {
 
 export class RestaurantService extends BaseService {
   async getRestaurants(params: GetRestaurantsQuery) {
-    const { page, limit } = params;
+    const { page, limit, sortColumn, sortDirection } =
+      params;
+
     const skip = (page - 1) * limit;
 
     const [restaurants, total] = await Promise.all([
       this.prisma.restaurant.findMany({
         skip,
         take: limit,
+        orderBy: {
+          [sortColumn]: sortDirection,
+        },
       }),
       this.prisma.restaurant.count(),
     ]);

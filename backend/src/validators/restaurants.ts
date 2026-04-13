@@ -16,6 +16,14 @@ const CuisineValues = [
 ] as const;
 const CuisineEnum = z.enum(CuisineValues);
 
+const SortColumnValues = ['id'] as const;
+export const SortColumnEnum = z.enum(SortColumnValues);
+
+const SortDirectionValues = ['asc', 'desc'] as const;
+export const SortDirectionEnum = z.enum(
+  SortDirectionValues
+);
+
 export const schemas = {
   getRestaurantsQuery: z.object({
     page: z.coerce
@@ -27,6 +35,8 @@ export const schemas = {
       .min(1)
       .max(50, 'Limit must be <= 50')
       .default(10),
+    sortColumn: SortColumnEnum.default('id'),
+    sortDirection: SortDirectionEnum.default('desc'),
   }),
   createRestaurantBody: z.object({
     name: z.string().min(1).max(256),
