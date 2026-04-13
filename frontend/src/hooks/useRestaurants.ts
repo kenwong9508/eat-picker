@@ -2,10 +2,13 @@ import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchRestaurants } from "../api/restaurants";
 import type { RestaurantsGetRequest } from "../types/restaurant";
+import { useToast } from "../components/ToastProvider";
 
 export function useRestaurants(initialPage = 1, initialLimit = 9) {
   const [page, setPage] = useState<RestaurantsGetRequest["page"]>(initialPage);
   const [limit] = useState<RestaurantsGetRequest["limit"]>(initialLimit);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const { showToast } = useToast();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["restaurants", page, limit],
@@ -40,6 +43,22 @@ export function useRestaurants(initialPage = 1, initialLimit = 9) {
     setPage((p) => (pagination && pagination.hasNext ? p + 1 : p));
   };
 
+  const handleOpenCreate = () => {
+    setIsCreateOpen(true);
+  };
+
+  const handleCloseCreate = () => {
+    setIsCreateOpen(false);
+  };
+
+  const handleCreateSuccess = () => {
+    showToast({
+      type: "success",
+      title: "Restaurant created",
+      message: "New restaurant has been added to the list.",
+    });
+  };
+
   return {
     page,
     setPage,
@@ -53,5 +72,9 @@ export function useRestaurants(initialPage = 1, initialLimit = 9) {
     handlePageChange,
     handlePrev,
     handleNext,
+    isCreateOpen,
+    handleOpenCreate,
+    handleCloseCreate,
+    handleCreateSuccess,
   };
 }

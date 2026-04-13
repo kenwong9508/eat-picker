@@ -35,3 +35,10 @@ select,
 textarea {
   font: inherit;
 }
+
+@layer base {
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-stone-500/70 dark:text-stone-500/60;
+  }
+}

@@ -1,4 +1,7 @@
-import type { CUISINES, SPEEDS } from "../constants/restaurant";
+import type { SPEEDS, CUISINES } from "../constants/restaurant";
+
+export type Speed = (typeof SPEEDS)[number];
+export type Cuisine = (typeof CUISINES)[number];
 
 export interface Restaurant {
   id: number;
@@ -34,5 +37,13 @@ export interface RestaurantsGetResponse {
   };
 }
 
-export type Cuisine = (typeof CUISINES)[number];
-export type Speed = (typeof SPEEDS)[number];
+export interface RestaurantCreateRequest {
+  name: string;
+  avgPrice: number;
+  speed: Speed;
+  cuisine: Cuisine;
+  takeaway: boolean;
+  dineIn: boolean;
+  active: boolean;
+  address?: string;
+}

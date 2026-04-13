@@ -11,6 +11,18 @@ export const CUISINES = [
   "thai",
 ] as const;
 
+export const CUISINE_OPTIONS = [
+  { value: "congee", label: "Congee" },
+  { value: "noodle", label: "Noodle" },
+  { value: "chinese", label: "Chinese" },
+  { value: "japanese", label: "Japanese" },
+  { value: "korean", label: "Korean" },
+  { value: "western", label: "Western" },
+  { value: "fastfood", label: "Fast food" },
+  { value: "thai", label: "Thai" },
+  { value: "hotpot", label: "Hotpot" },
+] as const;
+
 export const SPEEDS = ["fast", "normal", "slow"] as const;
 
 export const SPEED_OPTIONS = [

@@ -22,3 +22,23 @@ export async function apiGet<T>(url: string, config?: AxiosRequestConfig) {
     throw new Error(error.message);
   }
 }
+
+export async function apiPost<T>(
+  url: string,
+  data?: unknown,
+  config?: AxiosRequestConfig,
+) {
+  try {
+    const res = await apiClient.post<T>(url, data, config);
+    return res.data as T;
+  } catch (err) {
+    const error = err as AxiosError<T>;
+
+    // backend response
+    if (error.response?.data) {
+      return error.response.data as T;
+    }
+
+    throw new Error(error.message);
+  }
+}

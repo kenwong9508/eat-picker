@@ -1,9 +1,11 @@
 // frontend/src/api/restaurants.ts
 import type {
-  RestaurantsGetResponse,
   RestaurantsGetRequest,
+  RestaurantsGetResponse,
+  RestaurantCreateRequest,
+  Restaurant,
 } from "../types/restaurant";
-import { apiGet } from "./client";
+import { apiGet, apiPost } from "./client";
 import { ApiResponse } from "../types/api";
 import { isEmptyArray } from "../utils";
 
@@ -21,6 +23,21 @@ export async function fetchRestaurants(
 
   if (isEmptyArray(res.data.restaurants)) {
     throw new Error("No restaurants found");
+  }
+
+  return res.data;
+}
+
+export async function createRestaurant(
+  payload: RestaurantCreateRequest,
+): Promise<Restaurant> {
+  const res = await apiPost<ApiResponse<Restaurant>>(
+    "api/restaurants",
+    payload,
+  );
+
+  if ("error" in res) {
+    throw new Error(res?.error?.message ?? "Unknown error");
   }
 
   return res.data;
