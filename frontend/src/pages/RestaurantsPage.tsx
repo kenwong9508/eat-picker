@@ -1,92 +1,94 @@
-// import { useState } from "react";
-// import {
-//   useRestaurantsQuery,
-//   useCreateRestaurantMutation,
-//   useDeleteRestaurantMutation,
-// } from "../hooks/useRestaurants";
-// import { RestaurantForm, RestaurantFormValues } from "./RestaurantForm";
-// import type { Restaurant } from "../api/restaurants";
+import { useRestaurants } from "../hooks/useRestaurants";
+import { RestaurantCard } from "../components/RestaurantCard";
+import { Pagination } from "../components/Pagination";
 
 export function RestaurantsPage() {
-  // const { data, isLoading, isError } = useRestaurantsQuery();
-  // const createMutation = useCreateRestaurantMutation();
-  // const deleteMutation = useDeleteRestaurantMutation();
-  // const [isCreating, setIsCreating] = useState(false);
+  const {
+    page,
+    restaurants,
+    pagination,
+    total,
+    totalPages,
+    isLoading,
+    isError,
+    error,
+    handlePageChange,
+    handlePrev,
+    handleNext,
+  } = useRestaurants();
 
-  // const handleCreate = async (values: RestaurantFormValues) => {
-  //   await createMutation.mutateAsync(values);
-  //   setIsCreating(false);
-  // };
+  const handleEditRestaurant = (id: string) => {
+    // TODO
+    console.log("edit restaurant", id);
+  };
 
-  // const handleDelete = async (restaurant: Restaurant) => {
-  //   if (!window.confirm(`Delete restaurant "${restaurant.name}"?`)) return;
-  //   await deleteMutation.mutateAsync(restaurant.id);
-  // };
+  const handleDeleteRestaurant = (id: string) => {
+    // TODO
+    console.log("delete restaurant", id);
+  };
 
   return (
-    <div>Restaurants Page</div>
-    // <div>
-    //   <h1>Restaurants</h1>
+    <div className="mx-auto flex max-w-6xl flex-col gap-6 rounded-3xl bg-white/80 p-4 shadow-sm backdrop-blur sm:p-6 dark:bg-stone-900/80">
+      {/* Header */}
+      <header className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+        <div>
+          <h1 className="text-xl font-bold sm:text-2xl">Restaurants</h1>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+            Manage restaurants used for recommendations.
+          </p>
+        </div>
+        <button
+          type="button"
+          className="rounded-2xl bg-stone-900 px-4 py-2 text-sm font-semibold text-stone-50 shadow-sm disabled:cursor-not-allowed disabled:bg-stone-500 dark:bg-stone-100 dark:text-stone-900"
+          disabled
+        >
+          Create
+        </button>
+      </header>
 
-    //   <button onClick={() => setIsCreating(true)}>Create Restaurant</button>
+      {/* Card shell with inner scroll */}
+      <div className="flex-1 overflow-hidden">
+        <div className="flex min-h-[260px] max-h-[80vh] flex-col overflow-hidden rounded-3xl border border-stone-200 bg-stone-50/70 dark:border-stone-700 dark:bg-stone-900/60">
+          {isLoading && (
+            <div className="p-6 text-sm text-stone-500 dark:text-stone-400">
+              Loading restaurants…
+            </div>
+          )}
 
-    //   {isCreating && (
-    //     <div style={{ marginTop: "16px" }}>
-    //       <h2>Create</h2>
-    //       <RestaurantForm
-    //         defaultValues={{
-    //           name: "",
-    //           avgPrice: 100,
-    //           speed: "medium",
-    //           cuisine: "chinese",
-    //           takeaway: true,
-    //           dineIn: true,
-    //           active: true,
-    //           address: "",
-    //         }}
-    //         onSubmit={handleCreate}
-    //         onCancel={() => setIsCreating(false)}
-    //       />
-    //     </div>
-    //   )}
+          {isError && error && (
+            <div className="p-6 text-sm text-red-600 dark:text-red-400">
+              {error.message}
+            </div>
+          )}
 
-    //   {isLoading && <p>Loading...</p>}
-    //   {isError && <p>Failed to load restaurants.</p>}
-
-    //   <table
-    //     style={{ marginTop: "16px", width: "100%", borderCollapse: "collapse" }}
-    //   >
-    //     <thead>
-    //       <tr>
-    //         <th>Name</th>
-    //         <th>Avg Price</th>
-    //         <th>Cuisine</th>
-    //         <th>Speed</th>
-    //         <th>Takeaway</th>
-    //         <th>Dine In</th>
-    //         <th>Active</th>
-    //         <th>Address</th>
-    //         <th>Actions</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {/* {data?.map((r) => (
-    //         <tr key={r.id}>
-    //           <td>{r.name}</td>
-    //           <td>{r.avgPrice}</td>
-    //           <td>{r.cuisine}</td>
-    //           <td>{r.speed}</td>
-    //           <td>{r.takeaway ? "Yes" : "No"}</td>
-    //           <td>{r.dineIn ? "Yes" : "No"}</td>
-    //           <td>{r.active ? "Yes" : "No"}</td>
-    //           <td>{r.address}</td>
-    //           <td>
-    //             <button onClick={() => handleDelete(r)}>Delete</button>
-    //           </td>
-    //         </tr>
-    //       ))} */}
-    //     </tbody>
-    //   </table>
-    // </div>
+          {!isLoading && !isError && restaurants.length > 0 && (
+            <>
+              {/* Scrollable list area */}
+              <div className="flex-1 overflow-y-auto">
+                <div className="grid gap-4 border-t border-stone-200 bg-gradient-to-br from-stone-50 to-amber-50 p-4 dark:border-stone-700 dark:from-stone-900 dark:to-stone-950 sm:grid-cols-2 lg:grid-cols-3">
+                  {restaurants.map((restaurant) => (
+                    <RestaurantCard
+                      key={restaurant.id}
+                      restaurant={restaurant}
+                      onEdit={handleEditRestaurant}
+                      onDelete={handleDeleteRestaurant}
+                    />
+                  ))}
+                </div>
+              </div>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                total={total}
+                pagination={pagination}
+                onPageInputChange={handlePageChange}
+                onPrev={handlePrev}
+                onNext={handleNext}
+              />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
