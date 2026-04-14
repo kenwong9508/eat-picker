@@ -1,7 +1,7 @@
 // src/pages/RecommendPage.tsx
 import { FormEvent, useState } from "react";
 import { useRecommend } from "../hooks/useRecommend";
-import { CUISINES, SPEED_OPTIONS } from "../constants/restaurant";
+import { CUISINE_OPTIONS, SPEED_OPTIONS } from "../constants/restaurant";
 import { Cuisine, Speed } from "../types/restaurant";
 
 interface FormState {
@@ -145,12 +145,10 @@ export function RecommendPage() {
             Cuisine
           </label>
           <div className="grid grid-cols-3 gap-2">
-            {CUISINES.map((value) => {
+            {CUISINE_OPTIONS.map((cuisine) => {
+              const label = cuisine.label;
+              const value = cuisine.value;
               const isActive = form.cuisine === value;
-              const label =
-                value === "fastfood"
-                  ? "Fast food"
-                  : value.charAt(0).toUpperCase() + value.slice(1);
               return (
                 <button
                   key={value}
