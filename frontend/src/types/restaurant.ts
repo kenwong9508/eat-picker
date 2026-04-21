@@ -17,6 +17,17 @@ export interface Restaurant {
   updatedAt: string;
 }
 
+export type RestaurantFormState = {
+  name: string;
+  avgPrice: string;
+  speed: Speed;
+  cuisine: Cuisine;
+  address: string;
+  takeaway: boolean;
+  dineIn: boolean;
+  active: boolean;
+};
+
 export interface RestaurantsGetRequest {
   page: number;
   limit: number;
