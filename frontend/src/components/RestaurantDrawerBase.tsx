@@ -236,7 +236,7 @@ export function RestaurantDrawerBase({
                       type="button"
                       onClick={() => handleChange("speed")(opt.value)}
                       className={cn(
-                        "flex-1 rounded-full border px-2 py-1 text-xs font-medium transition",
+                        "cursor-pointer flex-1 rounded-full border px-2 py-1 text-xs font-medium transition",
                         form.speed === opt.value
                           ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-300"
                           : "border-stone-300 text-stone-600 hover:border-amber-400 dark:border-stone-700 dark:text-stone-300",
@@ -263,7 +263,7 @@ export function RestaurantDrawerBase({
                       type="button"
                       onClick={() => handleChange("cuisine")(opt.value)}
                       className={cn(
-                        "rounded-full border px-3 py-1 text-xs font-medium transition",
+                        "cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition",
                         form.cuisine === opt.value
                           ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-300"
                           : "border-stone-300 text-stone-600 hover:border-amber-400 dark:border-stone-700 dark:text-stone-300",
@@ -308,7 +308,7 @@ export function RestaurantDrawerBase({
                     type="button"
                     onClick={() => handleChange("takeaway")(!form.takeaway)}
                     className={cn(
-                      "flex h-5 w-9 items-center rounded-full px-0.5 text-xs transition",
+                      "cursor-pointer flex h-5 w-9 items-center rounded-full px-0.5 text-xs transition",
                       form.takeaway
                         ? "bg-emerald-500"
                         : "bg-stone-300 dark:bg-stone-700",
@@ -337,7 +337,7 @@ export function RestaurantDrawerBase({
                     type="button"
                     onClick={() => handleChange("dineIn")(!form.dineIn)}
                     className={cn(
-                      "flex h-5 w-9 items-center rounded-full px-0.5 text-xs transition",
+                      "cursor-pointer flex h-5 w-9 items-center rounded-full px-0.5 text-xs transition",
                       form.dineIn
                         ? "bg-emerald-500"
                         : "bg-stone-300 dark:bg-stone-700",
@@ -366,7 +366,7 @@ export function RestaurantDrawerBase({
                     type="button"
                     onClick={() => handleChange("active")(!form.active)}
                     className={cn(
-                      "flex h-5 w-9 items-center rounded-full px-0.5 text-xs transition",
+                      "cursor-pointer flex h-5 w-9 items-center rounded-full px-0.5 text-xs transition",
                       form.active
                         ? "bg-emerald-500"
                         : "bg-stone-300 dark:bg-stone-700",
