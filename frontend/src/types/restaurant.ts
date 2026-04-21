@@ -58,3 +58,5 @@ export interface RestaurantCreateRequest {
   active: boolean;
   address?: string;
 }
+
+export type RestaurantUpdateRequest = Partial<RestaurantCreateRequest>;

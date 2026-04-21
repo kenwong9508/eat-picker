@@ -1,7 +1,9 @@
+// frontend/src/pages/RestaurantsPage.tsx
 import { useRestaurants } from "../hooks/useRestaurants";
 import { RestaurantCard } from "../components/RestaurantCard";
 import { Pagination } from "../components/Pagination";
 import { CreateRestaurantDrawer } from "../components/CreateRestaurantDrawer";
+import { EditRestaurantDrawer } from "../components/EditRestaurantDrawer";
 
 export function RestaurantsPage() {
   const {
@@ -20,15 +22,15 @@ export function RestaurantsPage() {
     handleOpenCreate,
     handleCloseCreate,
     handleCreateSuccess,
+    isEditOpen,
+    editingRestaurant,
+    handleEditRestaurant,
+    handleCloseEdit,
+    handleEditSuccess,
   } = useRestaurants();
 
-  const handleEditRestaurant = (id: string) => {
-    // TODO
-    console.log("edit restaurant", id);
-  };
-
-  const handleDeleteRestaurant = (id: string) => {
-    // TODO
+  const handleDeleteRestaurant = (id: number) => {
+    // TODO: delete flow 之後再整
     console.log("delete restaurant", id);
   };
 
@@ -72,7 +74,6 @@ export function RestaurantsPage() {
 
             {!isLoading && !isError && restaurants.length > 0 && (
               <>
-                {/* Scrollable list area */}
                 <div className="flex-1 overflow-y-auto">
                   <div className="grid gap-4 border-t border-stone-200 bg-gradient-to-br from-stone-50 to-amber-50 p-4 dark:border-stone-700 dark:from-stone-900 dark:to-stone-950 sm:grid-cols-2 lg:grid-cols-3">
                     {restaurants.map((restaurant) => (
@@ -104,6 +105,13 @@ export function RestaurantsPage() {
         open={isCreateOpen}
         onClose={handleCloseCreate}
         onSuccess={handleCreateSuccess}
+      />
+
+      <EditRestaurantDrawer
+        open={isEditOpen}
+        restaurant={editingRestaurant}
+        onClose={handleCloseEdit}
+        onSuccess={handleEditSuccess}
       />
     </>
   );

@@ -59,6 +59,31 @@ export function useRestaurants(initialPage = 1, initialLimit = 9) {
     });
   };
 
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const editingRestaurant: Restaurant | null = editingId
+    ? (restaurants.find((r) => r.id === editingId) ?? null)
+    : null;
+
+  const handleEditRestaurant = (id: number) => {
+    setEditingId(id);
+    setIsEditOpen(true);
+  };
+
+  const handleCloseEdit = () => {
+    setIsEditOpen(false);
+    setEditingId(null);
+  };
+
+  const handleEditSuccess = () => {
+    showToast({
+      type: "success",
+      title: "Restaurant updated",
+      message: "Restaurant details have been saved.",
+    });
+  };
+
   return {
     page,
     setPage,
@@ -76,5 +101,12 @@ export function useRestaurants(initialPage = 1, initialLimit = 9) {
     handleOpenCreate,
     handleCloseCreate,
     handleCreateSuccess,
+    // edit
+    isEditOpen,
+    editingRestaurant,
+    handleEditRestaurant,
+    handleCloseEdit,
+    handleEditSuccess,
+    //
   };
 }
