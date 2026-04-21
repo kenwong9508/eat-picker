@@ -3,12 +3,7 @@ import { FormEvent, useState } from "react";
 import { useRecommend } from "../hooks/useRecommend";
 import { CUISINE_OPTIONS, SPEED_OPTIONS } from "../constants/restaurant";
 import { Cuisine, Speed } from "../types/restaurant";
-
-interface FormState {
-  budget: string;
-  speed: Speed | "";
-  cuisine: Cuisine | "";
-}
+import { useRecommendFormStore } from "../stores/useRecommendFormStore";
 
 interface FormErrors {
   budget?: string;
@@ -17,11 +12,16 @@ interface FormErrors {
 }
 
 export function RecommendPage() {
-  const [form, setForm] = useState<FormState>({
-    budget: "",
-    speed: "",
-    cuisine: "",
-  });
+  const {
+    budget,
+    speed,
+    cuisine,
+    setBudget,
+    setSpeed,
+    setCuisine,
+    // reset, // 之後如果想加「Clear form」可以用
+  } = useRecommendFormStore();
+
   const [formErrors, setFromErrors] = useState<FormErrors>({});
 
   const { getRecommend, data, isLoading, isApiError, apiError } =
@@ -30,18 +30,18 @@ export function RecommendPage() {
   const validate = (): boolean => {
     const nextErrors: FormErrors = {};
 
-    const budgetNumber = Number(form.budget);
-    if (!form.budget) {
+    const budgetNumber = Number(budget);
+    if (!budget) {
       nextErrors.budget = "Please enter a budget amount";
     } else if (Number.isNaN(budgetNumber) || budgetNumber <= 0) {
       nextErrors.budget = "Budget must be a number greater than 0";
     }
 
-    if (!form.speed) {
+    if (!speed) {
       nextErrors.speed = "Please select a speed";
     }
 
-    if (!form.cuisine) {
+    if (!cuisine) {
       nextErrors.cuisine = "Please select a cuisine";
     }
 
@@ -54,9 +54,9 @@ export function RecommendPage() {
     if (!validate()) return;
 
     getRecommend({
-      budget: Number(form.budget),
-      speed: form.speed as Speed,
-      cuisine: form.cuisine as Cuisine,
+      budget: Number(budget),
+      speed: speed as Speed,
+      cuisine: cuisine as Cuisine,
     });
   };
 
@@ -88,10 +88,8 @@ export function RecommendPage() {
               type="number"
               min={1}
               step={1}
-              value={form.budget}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, budget: e.target.value }))
-              }
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
               className="h-7 flex-1 bg-transparent text-sm outline-none placeholder:text-stone-400 dark:placeholder:text-stone-500"
               placeholder="e.g. 50"
             />
@@ -108,17 +106,12 @@ export function RecommendPage() {
           </label>
           <div className="grid grid-cols-3 gap-2">
             {SPEED_OPTIONS.map((option) => {
-              const isActive = form.speed === option.value;
+              const isActive = speed === option.value;
               return (
                 <button
                   key={option.value}
                   type="button"
-                  onClick={() =>
-                    setForm((prev) => ({
-                      ...prev,
-                      speed: option.value as Speed,
-                    }))
-                  }
+                  onClick={() => setSpeed(option.value as Speed)}
                   className={[
                     "flex flex-col items-start gap-0.5 rounded-2xl border px-3 py-2.5 text-left text-sm transition",
                     isActive
@@ -145,17 +138,15 @@ export function RecommendPage() {
             Cuisine
           </label>
           <div className="grid grid-cols-3 gap-2">
-            {CUISINE_OPTIONS.map((cuisine) => {
-              const label = cuisine.label;
-              const value = cuisine.value;
-              const isActive = form.cuisine === value;
+            {CUISINE_OPTIONS.map((c) => {
+              const label = c.label;
+              const value = c.value;
+              const isActive = cuisine === value;
               return (
                 <button
                   key={value}
                   type="button"
-                  onClick={() =>
-                    setForm((prev) => ({ ...prev, cuisine: value as Cuisine }))
-                  }
+                  onClick={() => setCuisine(value as Cuisine)}
                   className={[
                     "rounded-2xl border px-3 py-2 text-sm transition",
                     isActive
