@@ -4,8 +4,8 @@ import { formatCuisine, formatSpeed } from "../utils/restaurantFormat";
 
 type RestaurantCardProps = {
   restaurant: Restaurant;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
 };
 
 export function RestaurantCard({
@@ -79,7 +79,7 @@ export function RestaurantCard({
         <div className="flex items-center gap-2 text-xs">
           <button
             type="button"
-            className="text-teal-700 hover:underline dark:text-teal-300 disabled:cursor-not-allowed"
+            className="cursor-pointer text-teal-700 hover:underline dark:text-teal-300 disabled:cursor-not-allowed"
             onClick={() => onEdit?.(restaurant.id)}
             disabled={!onEdit}
           >
