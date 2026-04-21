@@ -5,14 +5,10 @@ import { formatCuisine, formatSpeed } from "../utils/restaurantFormat";
 type RestaurantCardProps = {
   restaurant: Restaurant;
   onEdit?: (id: number) => void;
-  onDelete?: (id: number) => void;
+  // onDelete?: (id: number) => void;
 };
 
-export function RestaurantCard({
-  restaurant,
-  onEdit,
-  onDelete,
-}: RestaurantCardProps) {
+export function RestaurantCard({ restaurant, onEdit }: RestaurantCardProps) {
   return (
     <div className="flex flex-col rounded-2xl bg-white/90 p-4 shadow-sm ring-1 ring-stone-200 dark:bg-stone-900/90 dark:ring-stone-700">
       {/* Header: name + cuisine + status */}
@@ -85,14 +81,14 @@ export function RestaurantCard({
           >
             Edit
           </button>
-          <button
+          {/* <button
             type="button"
             className="text-red-500 opacity-40 dark:text-red-400 disabled:cursor-not-allowed"
             onClick={() => onDelete?.(restaurant.id)}
             disabled={!onDelete}
           >
             Delete
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

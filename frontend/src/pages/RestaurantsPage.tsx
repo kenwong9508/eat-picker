@@ -29,10 +29,9 @@ export function RestaurantsPage() {
     handleEditSuccess,
   } = useRestaurants();
 
-  const handleDeleteRestaurant = (id: number) => {
-    // TODO: delete flow 之後再整
-    console.log("delete restaurant", id);
-  };
+  // const handleDeleteRestaurant = (id: number) => {
+  //   console.log("delete restaurant", id);
+  // };
 
   return (
     <>
@@ -81,7 +80,7 @@ export function RestaurantsPage() {
                         key={restaurant.id}
                         restaurant={restaurant}
                         onEdit={handleEditRestaurant}
-                        onDelete={handleDeleteRestaurant}
+                        // onDelete={handleDeleteRestaurant}
                       />
                     ))}
                   </div>
