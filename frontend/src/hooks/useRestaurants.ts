@@ -14,6 +14,7 @@ export function useRestaurants(initialPage = 1, initialLimit = 9) {
     queryKey: ["restaurants", page, limit],
     queryFn: () => fetchRestaurants({ page, limit }),
     placeholderData: keepPreviousData,
+    retry: false,
   });
 
   const restaurants = data?.restaurants ?? [];
