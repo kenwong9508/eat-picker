@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchRestaurants } from "../api/restaurants";
-import type { RestaurantsGetRequest } from "../types/restaurant";
+import type { Restaurant, RestaurantsGetRequest } from "../types/restaurant";
 import { useToast } from "../components/ToastProvider";
 
 export function useRestaurants(initialPage = 1, initialLimit = 9) {
