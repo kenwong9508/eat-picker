@@ -1,7 +1,16 @@
 // src/routes/config.ts
 import type { ReactElement } from "react";
+import { lazy } from "react";
+
+// Recommend 首屏，照樣直接 import
 import { RecommendPage } from "../pages/RecommendPage";
-import { RestaurantsPage } from "../pages/RestaurantsPage";
+
+// Restaurants 做 lazy load
+const RestaurantsPage = lazy(() =>
+  import("../pages/RestaurantsPage").then((module) => ({
+    default: module.RestaurantsPage,
+  })),
+);
 
 export type AppRoute = {
   name: string;

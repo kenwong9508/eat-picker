@@ -14,6 +14,8 @@ import { cn } from "../utils";
 import { ThemeMode, useTheme } from "../hooks/useTheme";
 import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 import { useCloseOnDesktop } from "../hooks/useCloseOnDesktop";
+import { Suspense } from "react";
+import { PageFallback } from "../components/PageFallback";
 
 const desktopNavBase =
   "min-w-[176px] rounded-2xl border px-3.5 py-3 transition duration-200";
@@ -248,7 +250,9 @@ export function MainLayout() {
 
         <main id="main-content" className="pt-4 sm:pt-5">
           <div className="mx-auto w-full max-w-6xl">
-            <Outlet />
+            <Suspense fallback={<PageFallback />}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>
