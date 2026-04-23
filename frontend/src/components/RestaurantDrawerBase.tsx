@@ -15,6 +15,7 @@ type Props = {
   apiError: string | null;
   onClose: () => void;
   onSubmit: (payload: RestaurantCreateRequest) => Promise<void>;
+  onFormChange?: (next: RestaurantFormState) => void; // 新增：向外同步 form 狀態
 };
 
 type FormErrors = Partial<Record<keyof RestaurantFormState, string>>;
@@ -27,21 +28,20 @@ export function RestaurantDrawerBase({
   apiError,
   onClose,
   onSubmit,
+  onFormChange,
 }: Props) {
   const [form, setForm] = useState<RestaurantFormState>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isConfirmStage, setIsConfirmStage] = useState(false);
   const [localApiError, setLocalApiError] = useState<string | null>(null);
 
-  // 打開 / initialValues 變時 sync 狀態
+  // 初始化 / 切 mode / initialValues 真係變先重設
   useEffect(() => {
-    if (open) {
-      setForm(initialValues);
-      setErrors({});
-      setIsConfirmStage(false);
-      setLocalApiError(null);
-    }
-  }, [open]);
+    setForm(initialValues);
+    setErrors({});
+    setIsConfirmStage(false);
+    setLocalApiError(null);
+  }, [mode, initialValues]);
 
   // 外面傳入的 apiError → 顯示喺 drawer
   useEffect(() => {
@@ -53,7 +53,11 @@ export function RestaurantDrawerBase({
   const handleChange =
     <K extends keyof RestaurantFormState>(key: K) =>
     (value: RestaurantFormState[K]) => {
-      setForm((prev) => ({ ...prev, [key]: value }));
+      setForm((prev) => {
+        const next = { ...prev, [key]: value };
+        if (onFormChange) onFormChange(next);
+        return next;
+      });
       setErrors((prev) => ({ ...prev, [key]: undefined }));
       setIsConfirmStage(false);
       setLocalApiError(null);
@@ -143,7 +147,6 @@ export function RestaurantDrawerBase({
           ? "pointer-events-auto bg-black/40 backdrop-blur-sm"
           : "pointer-events-none bg-transparent",
       )}
-      // 已經移除 onClick，backdrop 唔會再關 drawer
     >
       <section
         className={cn(
