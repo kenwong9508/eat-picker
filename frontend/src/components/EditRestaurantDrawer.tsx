@@ -3,8 +3,8 @@ import { RestaurantDrawerBase } from "./RestaurantDrawerBase";
 import type {
   RestaurantFormState,
   RestaurantUpdateRequest,
+  Restaurant,
 } from "../types/restaurant";
-import type { Restaurant } from "../types/restaurant";
 import { useEditRestaurant } from "../hooks/useEditRestaurant";
 
 type Props = {

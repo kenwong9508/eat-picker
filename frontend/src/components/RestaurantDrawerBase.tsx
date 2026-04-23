@@ -1,7 +1,9 @@
 // frontend/src/components/RestaurantDrawerBase.tsx
 import { FormEvent, useEffect, useState } from "react";
-import type { RestaurantCreateRequest } from "../types/restaurant";
-import type { RestaurantFormState } from "../types/restaurant";
+import type {
+  RestaurantCreateRequest,
+  RestaurantFormState,
+} from "../types/restaurant";
 import { cn } from "../utils";
 import { CUISINE_OPTIONS, SPEED_OPTIONS } from "../constants/restaurant";
 
@@ -15,7 +17,7 @@ type Props = {
   apiError: string | null;
   onClose: () => void;
   onSubmit: (payload: RestaurantCreateRequest) => Promise<void>;
-  onFormChange?: (next: RestaurantFormState) => void; // 新增：向外同步 form 狀態
+  onFormChange?: (next: RestaurantFormState) => void;
 };
 
 type FormErrors = Partial<Record<keyof RestaurantFormState, string>>;
@@ -35,13 +37,15 @@ export function RestaurantDrawerBase({
   const [isConfirmStage, setIsConfirmStage] = useState(false);
   const [localApiError, setLocalApiError] = useState<string | null>(null);
 
-  // 初始化 / 切 mode / initialValues 真係變先重設
+  // 開 drawer 嗰刻先用 initialValues 初始化一次
   useEffect(() => {
-    setForm(initialValues);
-    setErrors({});
-    setIsConfirmStage(false);
-    setLocalApiError(null);
-  }, [mode, initialValues]);
+    if (open) {
+      setForm(initialValues);
+      setErrors({});
+      setIsConfirmStage(false);
+      setLocalApiError(null);
+    }
+  }, [open]);
 
   // 外面傳入的 apiError → 顯示喺 drawer
   useEffect(() => {
