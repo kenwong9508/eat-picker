@@ -41,7 +41,7 @@ export function RestaurantDrawerBase({
       setIsConfirmStage(false);
       setLocalApiError(null);
     }
-  }, [open, initialValues]);
+  }, [open]);
 
   // 外面傳入的 apiError → 顯示喺 drawer
   useEffect(() => {
