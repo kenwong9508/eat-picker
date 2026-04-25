@@ -24,6 +24,8 @@ describe('getRestaurants', () => {
     const result = await service.getRestaurants({
       page: 1,
       limit: 2,
+      sortColumn: 'id',
+      sortDirection: 'desc',
     });
 
     expect(result.restaurants).toHaveLength(2);
@@ -40,11 +42,19 @@ describe('getRestaurants', () => {
     prismaMock.restaurant.findMany.mockResolvedValue([]);
     prismaMock.restaurant.count.mockResolvedValue(10);
 
-    await service.getRestaurants({ page: 2, limit: 5 });
+    await service.getRestaurants({
+      page: 2,
+      limit: 5,
+      sortColumn: 'id',
+      sortDirection: 'desc',
+    });
 
     expect(
       prismaMock.restaurant.findMany
     ).toHaveBeenCalledWith({
+      orderBy: {
+        id: 'desc',
+      },
       skip: 5,
       take: 5,
     });
@@ -60,6 +70,8 @@ describe('getRestaurants', () => {
     const result = await service.getRestaurants({
       page: 1,
       limit: 5,
+      sortColumn: 'id',
+      sortDirection: 'desc',
     });
 
     expect(result.pagination.hasNext).toBe(false);
@@ -71,6 +83,8 @@ describe('getRestaurants', () => {
     const result = await service.getRestaurants({
       page: 1,
       limit: 2,
+      sortColumn: 'id',
+      sortDirection: 'desc',
     });
 
     expect(result.restaurants).toHaveLength(0);
