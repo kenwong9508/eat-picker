@@ -97,7 +97,7 @@ jobs:
               -p 3000:3000 \
               -e PORT=3000 \
               -e NODE_ENV=production \
-              -e CORS_ORIGINS="${{ vars.CORS_ORIGINS }}" \
+              -e CORS_ORIGINS='${{ vars.CORS_ORIGINS }}' \
               -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
               ${{ env.IMAGE_NAME }}:${{ github.sha }}
             docker image prune -f
