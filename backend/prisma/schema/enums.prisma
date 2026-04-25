@@ -1,0 +1,23 @@
+enum Speed {
+  fast
+  normal
+  slow
+
+  @@map("speed_enum")
+  @@schema("eatpicker")
+}
+
+enum Cuisine {
+  chinese
+  congee
+  noodle
+  hotpot
+  japanese
+  korean
+  western
+  fastfood
+  thai
+
+  @@map("cuisine_enum")
+  @@schema("eatpicker")
+}

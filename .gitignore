@@ -1,0 +1,49 @@
+# Dependencies
+**/node_modules/
+**/bower_components/
+
+# Environment variables
+**/.env
+**/.env.*
+**/.env.local
+**/.env.*.local
+
+# Logs
+**/*.log
+logs/
+**/logs/
+
+# Build outputs
+**/dist/
+**/build/
+**/.next/
+**/out/
+
+# Runtime data
+**/pids
+**/*.pid
+**/*.seed
+**/*.pid.lock
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+**/coverage/
+.coverage
+
+# Prisma
+prisma/migrations/

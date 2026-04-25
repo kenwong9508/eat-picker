@@ -1,0 +1,23 @@
+{
+  "name": "eat-picker",
+  "version": "1.0.0",
+  "author": "Ken Wong",
+  "license": "MIT",
+  "description": "Restaurant recommendation app",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev:backend:install": "cd backend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend:install": "cd frontend && npm install",
+    "dev:frontend": "cd frontend && npm run dev",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.4"
+  },
+  "lint-staged": {
+    "backend/src/**/*.{ts,js}": "npm run lint --prefix backend",
+    "frontend/src/**/*.{ts,tsx,js,jsx}": "npm run lint --prefix frontend"
+  }
+}
