@@ -22,7 +22,7 @@ export type AppRoute = {
 
 export const routes: AppRoute[] = [
   {
-    name: "Recommend",
+    name: "Recommendtest999",
     path: "/",
     element: <RecommendPage />,
     showInMenu: true,
