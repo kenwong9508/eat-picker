@@ -113,7 +113,7 @@ export function RecommendPage() {
                   type="button"
                   onClick={() => setSpeed(option.value as Speed)}
                   className={[
-                    "flex flex-col items-start gap-0.5 rounded-2xl border px-3 py-2.5 text-left text-sm transition",
+                    "cursor-pointer flex flex-col items-start gap-0.5 rounded-2xl border px-3 py-2.5 text-left text-sm transition",
                     isActive
                       ? "border-teal-600 bg-teal-600/10 text-teal-800 dark:border-teal-300 dark:bg-teal-300/10 dark:text-teal-100"
                       : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-300 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100",
@@ -148,7 +148,7 @@ export function RecommendPage() {
                   type="button"
                   onClick={() => setCuisine(value as Cuisine)}
                   className={[
-                    "rounded-2xl border px-3 py-2 text-sm transition",
+                    "cursor-pointer rounded-2xl border px-3 py-2 text-sm transition",
                     isActive
                       ? "border-teal-600 bg-teal-600/10 text-teal-800 dark:border-teal-300 dark:bg-teal-300/10 dark:text-teal-100"
                       : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-300 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100",
@@ -172,7 +172,7 @@ export function RecommendPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="inline-flex items-center gap-2 rounded-2xl 
+            className="cursor-pointer inline-flex items-center gap-2 rounded-2xl 
               bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white 
               shadow-sm transition hover:bg-teal-800 
               disabled:bg-stone-500 disabled:text-stone-200 
