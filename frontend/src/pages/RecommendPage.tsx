@@ -1,4 +1,4 @@
-// src/pages/RecommendPage.tsx
+// frontend/src/pages/RecommendPage.tsx
 import { FormEvent, useState } from "react";
 import { useRecommend } from "../hooks/useRecommend";
 import { CUISINE_OPTIONS, SPEED_OPTIONS } from "../constants/restaurant";
@@ -16,6 +16,7 @@ export function RecommendPage() {
     budget,
     speed,
     cuisine,
+    recommendResult,
     setBudget,
     setSpeed,
     setCuisine,
@@ -24,8 +25,7 @@ export function RecommendPage() {
 
   const [formErrors, setFromErrors] = useState<FormErrors>({});
 
-  const { getRecommend, data, isLoading, isApiError, apiError } =
-    useRecommend();
+  const { getRecommend, isLoading, isApiError, apiError } = useRecommend();
 
   const validate = (): boolean => {
     const nextErrors: FormErrors = {};
@@ -193,26 +193,26 @@ export function RecommendPage() {
           </p>
         )}
 
-        {data && (
+        {recommendResult && (
           <div className="mt-3 rounded-3xl border border-stone-200 bg-gradient-to-br from-amber-50 to-stone-50 p-4 shadow-sm dark:border-stone-700 dark:from-stone-900 dark:to-stone-950">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-teal-700 dark:text-teal-300">
               Today&apos;s pick
             </p>
             <h2 className="mt-1 text-xl font-bold text-stone-900 dark:text-stone-50">
-              {data.name}
+              {recommendResult.name}
             </h2>
             <div className="mt-2 text-sm text-stone-600 dark:text-stone-300">
-              {data.address}
+              {recommendResult.address}
             </div>
             <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-200">
               <span className="rounded-full bg-stone-800 px-3 py-1">
-                Avg price: {data.avgPrice}
+                Avg price: {recommendResult.avgPrice}
               </span>
               <span className="rounded-full bg-stone-800 px-3 py-1">
-                Speed: {data.speed}
+                Speed: {recommendResult.speed}
               </span>
               <span className="rounded-full bg-stone-800 px-3 py-1">
-                Cuisine: {data.cuisine}
+                Cuisine: {recommendResult.cuisine}
               </span>
             </div>
           </div>
