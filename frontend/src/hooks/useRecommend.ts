@@ -8,8 +8,11 @@ export function useRecommend() {
   const setRecommendResult = useRecommendFormStore(
     (state) => state.setRecommendResult,
   );
+  const setRecommendErrorMessage = useRecommendFormStore(
+    (state) => state.setRecommendErrorMessage,
+  );
 
-  const { mutate, isPending, isError, error } = useMutation<
+  const { mutate, isPending } = useMutation<
     RecommendResponse,
     Error,
     RecommendRequest
@@ -18,13 +21,16 @@ export function useRecommend() {
     mutationFn: (payload) => fetchRecommendRestaurant(payload),
     onSuccess: (data) => {
       setRecommendResult(data);
+      setRecommendErrorMessage(null);
+    },
+    onError: (error) => {
+      setRecommendResult(null);
+      setRecommendErrorMessage(error.message);
     },
   });
 
   return {
     getRecommend: mutate,
     isLoading: isPending,
-    isApiError: isError,
-    apiError: error,
   };
 }

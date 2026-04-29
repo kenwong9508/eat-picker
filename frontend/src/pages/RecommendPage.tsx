@@ -17,15 +17,14 @@ export function RecommendPage() {
     speed,
     cuisine,
     recommendResult,
+    recommendErrorMessage,
     setBudget,
     setSpeed,
     setCuisine,
-    // reset, // 之後如果想加「Clear form」可以用
   } = useRecommendFormStore();
 
   const [formErrors, setFromErrors] = useState<FormErrors>({});
-
-  const { getRecommend, isLoading, isApiError, apiError } = useRecommend();
+  const { getRecommend, isLoading } = useRecommend();
 
   const validate = (): boolean => {
     const nextErrors: FormErrors = {};
@@ -187,9 +186,9 @@ export function RecommendPage() {
 
       {/* Result */}
       <section className="mt-2">
-        {isApiError && (
+        {recommendErrorMessage && (
           <p className="rounded-2xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/60 dark:bg-red-950/40 dark:text-red-200">
-            {apiError?.message}
+            {recommendErrorMessage}
           </p>
         )}
 
