@@ -1,4 +1,4 @@
-// src/pages/RecommendPage.tsx
+// frontend/src/pages/RecommendPage.tsx
 import { FormEvent, useState } from "react";
 import { useRecommend } from "../hooks/useRecommend";
 import { CUISINE_OPTIONS, SPEED_OPTIONS } from "../constants/restaurant";
@@ -16,16 +16,15 @@ export function RecommendPage() {
     budget,
     speed,
     cuisine,
+    recommendResult,
+    recommendErrorMessage,
     setBudget,
     setSpeed,
     setCuisine,
-    // reset, // 之後如果想加「Clear form」可以用
   } = useRecommendFormStore();
 
   const [formErrors, setFromErrors] = useState<FormErrors>({});
-
-  const { getRecommend, data, isLoading, isApiError, apiError } =
-    useRecommend();
+  const { getRecommend, isLoading } = useRecommend();
 
   const validate = (): boolean => {
     const nextErrors: FormErrors = {};
@@ -113,7 +112,7 @@ export function RecommendPage() {
                   type="button"
                   onClick={() => setSpeed(option.value as Speed)}
                   className={[
-                    "flex flex-col items-start gap-0.5 rounded-2xl border px-3 py-2.5 text-left text-sm transition",
+                    "cursor-pointer flex flex-col items-start gap-0.5 rounded-2xl border px-3 py-2.5 text-left text-sm transition",
                     isActive
                       ? "border-teal-600 bg-teal-600/10 text-teal-800 dark:border-teal-300 dark:bg-teal-300/10 dark:text-teal-100"
                       : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-300 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100",
@@ -148,7 +147,7 @@ export function RecommendPage() {
                   type="button"
                   onClick={() => setCuisine(value as Cuisine)}
                   className={[
-                    "rounded-2xl border px-3 py-2 text-sm transition",
+                    "cursor-pointer rounded-2xl border px-3 py-2 text-sm transition",
                     isActive
                       ? "border-teal-600 bg-teal-600/10 text-teal-800 dark:border-teal-300 dark:bg-teal-300/10 dark:text-teal-100"
                       : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-300 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100",
@@ -172,7 +171,7 @@ export function RecommendPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="inline-flex items-center gap-2 rounded-2xl 
+            className="cursor-pointer inline-flex items-center gap-2 rounded-2xl 
               bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white 
               shadow-sm transition hover:bg-teal-800 
               disabled:bg-stone-500 disabled:text-stone-200 
@@ -187,32 +186,32 @@ export function RecommendPage() {
 
       {/* Result */}
       <section className="mt-2">
-        {isApiError && (
+        {recommendErrorMessage && (
           <p className="rounded-2xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/60 dark:bg-red-950/40 dark:text-red-200">
-            {apiError?.message}
+            {recommendErrorMessage}
           </p>
         )}
 
-        {data && (
+        {recommendResult && (
           <div className="mt-3 rounded-3xl border border-stone-200 bg-gradient-to-br from-amber-50 to-stone-50 p-4 shadow-sm dark:border-stone-700 dark:from-stone-900 dark:to-stone-950">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-teal-700 dark:text-teal-300">
               Today&apos;s pick
             </p>
             <h2 className="mt-1 text-xl font-bold text-stone-900 dark:text-stone-50">
-              {data.name}
+              {recommendResult.name}
             </h2>
             <div className="mt-2 text-sm text-stone-600 dark:text-stone-300">
-              {data.address}
+              {recommendResult.address}
             </div>
             <div className="mt-3 flex flex-wrap gap-2 text-xs text-stone-200">
               <span className="rounded-full bg-stone-800 px-3 py-1">
-                Avg price: {data.avgPrice}
+                Avg price: {recommendResult.avgPrice}
               </span>
               <span className="rounded-full bg-stone-800 px-3 py-1">
-                Speed: {data.speed}
+                Speed: {recommendResult.speed}
               </span>
               <span className="rounded-full bg-stone-800 px-3 py-1">
-                Cuisine: {data.cuisine}
+                Cuisine: {recommendResult.cuisine}
               </span>
             </div>
           </div>
